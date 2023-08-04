@@ -14,7 +14,7 @@ metadata = MetaData()
 User = Table(
     "users",
     metadata,
-    Column("user_id", String, primary_key=True),
+    Column("id", String, primary_key=True),
     Column("username", String, unique=True),
     Column("password", String),
     Column("wx_openid", String),
@@ -26,9 +26,9 @@ User = Table(
 Memo = Table(
     "memos",
     metadata,
-    Column("memo_id", String, primary_key=True),
+    Column("id", String, primary_key=True),
     Column("content", TEXT),
-    Column("user_id", None, ForeignKey("users.user_id")),
+    Column("user_id", None, ForeignKey("users.id")),
     Column("created_at", TIMESTAMP, default=datetime.now),
     Column("updated_at", TIMESTAMP, default=datetime.now),
     Column("deleted_at", TIMESTAMP, default=datetime.now)

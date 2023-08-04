@@ -1,7 +1,8 @@
 import logging
 from typing import Dict
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
 from memos.api import auth_router, memo_router
 from memos.store import db, init_tables
@@ -34,5 +35,5 @@ async def startup() -> None:
 async def shutdown() -> None:
     await db.disconnect()
 
-app.include_router(auth_router, tags=["auth"])
-app.include_router(memo_router, tags=["memo"])
+app.include_router(auth_router, prefix="/api", tags=["auth"])
+app.include_router(memo_router, prefix="/api", tags=["memo"])

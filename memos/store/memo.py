@@ -1,15 +1,15 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy.engine import Row
-
+from memos.schema import MemoResponse
 from memos.store import db, Memo
 
 
-async def create_memo(content: str, user_id: str):
+async def create_memo(content: str, user_id: str) -> MemoResponse:
     now_datetime = datetime.now()
-    memo = {
-        "memo_id": uuid.uuid4().hex,
+    memo_id = uuid.uuid4().hex
+    m = {
+        "id": memo_id,
         "content": content,
         "user_id": user_id,
         "created_at": now_datetime,
@@ -17,21 +17,33 @@ async def create_memo(content: str, user_id: str):
     }
 
     query = Memo.insert()
-    await db.execute(query=query, values=memo)
-    return memo
+    await db.execute(query=query, values=m)
+    return MemoResponse(
+        id=memo_id,
+        content=content,
+        created_at=now_datetime.strftime("%Y-%m-%d %H:%M:%S"),
+        updated_at=now_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    )
 
 
 async def update_memo(memo_id: str, content: str):
     now_datetime = datetime.now()
-    await get_memo_by_id(memo_id)
+    m = await get_memo_by_id(memo_id)
 
     updated_memo = {
         "content": content,
         "updated_at": now_datetime
     }
 
-    query = Memo.update().where(Memo.c.memo_id == memo_id)
+    query = Memo.update().where(Memo.c.id == memo_id)
     await db.execute(query=query, values=updated_memo)
+
+    return MemoResponse(
+        id=memo_id,
+        content=content,
+        created_at=m.created_at,
+        updated_at=now_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    )
 
 
 async def delete_memo(memo_id: str):
@@ -43,29 +55,50 @@ async def delete_memo(memo_id: str):
         "deleted_at": now_datetime
     }
 
-    query = Memo.update().where(Memo.c.memo_id == memo_id)
+    query = Memo.update().where(Memo.c.id == memo_id)
     await db.execute(query=query, values=updated_memo)
 
 
-async def get_memo_by_id(memo_id: str) -> Row:
-    query = Memo.select().where(Memo.c.memo_id == memo_id)
-    memo = await db.fetch_one(query)
+async def get_memo_by_id(memo_id: str) -> MemoResponse:
+    query = Memo.select().where(Memo.c.id == memo_id)
+    m = await db.fetch_one(query)
 
-    if memo is None:
+    if m is None:
         raise ValueError("No such memo")
 
-    return memo
+    return MemoResponse(
+        id=m.id,
+        content=m.content,
+        created_at=m.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        updated_at=m.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+    )
 
 
-async def get_memos_by_user_id(user_id: str) -> list[Memo]:
-    query = Memo.select().where(Memo.c.user_id == user_id)
+async def get_memos_by_user_id(user_id: str) -> list[MemoResponse]:
+    query = Memo.select().where(Memo.c.id == user_id)
     memos = await db.fetch_all(query)
 
-    return memos
+    return [
+        MemoResponse(
+            id=m.id,
+            content=m.content,
+            created_at=m.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            updated_at=m.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+        )
+        for m in memos
+    ]
 
 
-async def get_all_memos() -> list[Memo]:
+async def get_all_memos() -> list[MemoResponse]:
     query = Memo.select()
     memos = await db.fetch_all(query)
 
-    return memos
+    return [
+        MemoResponse(
+            id=m.id,
+            content=m.content,
+            created_at=m.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            updated_at=m.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+        )
+        for m in memos
+    ]
