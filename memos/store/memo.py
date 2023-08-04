@@ -48,7 +48,7 @@ async def update_memo(memo_id: str, content: str):
 
 async def delete_memo(memo_id: str):
     now_datetime = datetime.now()
-    await get_memo_by_id(memo_id)
+    m = await get_memo_by_id(memo_id)
 
     updated_memo = {
         "updated_at": now_datetime,
@@ -57,6 +57,13 @@ async def delete_memo(memo_id: str):
 
     query = Memo.update().where(Memo.c.id == memo_id)
     await db.execute(query=query, values=updated_memo)
+
+    return MemoResponse(
+        id=memo_id,
+        content=m.content,
+        created_at=m.created_at,
+        updated_at=now_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    )
 
 
 async def get_memo_by_id(memo_id: str) -> MemoResponse:
@@ -74,8 +81,8 @@ async def get_memo_by_id(memo_id: str) -> MemoResponse:
     )
 
 
-async def get_memos_by_user_id(user_id: str) -> list[MemoResponse]:
-    query = Memo.select().where(Memo.c.id == user_id)
+async def get_all_memos() -> list[MemoResponse]:
+    query = Memo.select().where(Memo.c.deleted_at.is_(None))
     memos = await db.fetch_all(query)
 
     return [
@@ -89,8 +96,8 @@ async def get_memos_by_user_id(user_id: str) -> list[MemoResponse]:
     ]
 
 
-async def get_all_memos() -> list[MemoResponse]:
-    query = Memo.select()
+async def get_deleted_memos() -> list[MemoResponse]:
+    query = Memo.select().where(Memo.c.deleted_at.isnot(None))
     memos = await db.fetch_all(query)
 
     return [

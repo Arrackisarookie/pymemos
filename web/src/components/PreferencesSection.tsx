@@ -11,7 +11,7 @@ const PreferencesSection: React.FC<Props> = () => {
   const { globalState } = useContext(appContext);
   const { useTinyUndoHistoryCache, shouldHideImageUrl, shouldSplitMemoWord, shouldUseMarkdownParser } = globalState;
 
-  const demoMemoContent = `👋 你好呀～\n我是一个demo：\n* 👏 欢迎使用memos；`;
+  const demoMemoContent = `👋 你好呀～\n我是一个demo：\n* 👏 欢迎使用memos；\n*你好*\n**你好**\n1. 你好\n2. 你好\n https://asdf.international/wp-content/uploads/2015/01/colorslogo1.jpg`;
 
   const handleOpenTinyUndoChanged = () => {
     globalStateService.setAppSetting({

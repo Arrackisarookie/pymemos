@@ -26,7 +26,7 @@ const MemoList: React.FC<Props> = () => {
       ? memos.filter((memo) => {
           let shouldShow = true;
 
-          if (tagQuery && !memo.content.includes(`# ${tagQuery}`)) {
+          if (tagQuery && !memo.content.includes(`#${tagQuery}`)) {
             shouldShow = false;
           }
           if (

@@ -54,6 +54,25 @@ async function patch<T>(url: string, data?: BasicType): Promise<ResponseType<T>>
   return resData;
 }
 
+
+async function delete_<T>(url: string, data?: BasicType): Promise<ResponseType<T>> {
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const resData = (await response.json()) as ResponseType<T>;
+
+  if (!resData.succeed) {
+    throw resData;
+  }
+
+  return resData;
+}
+
 namespace api {
   export function getUserInfo() {
     return get<Model.User>("/api/me");
@@ -93,7 +112,7 @@ namespace api {
   }
 
   export function getMyDeletedMemos() {
-    return get<Model.Memo[]>("/api/memo/deleted");
+    return get<Model.Memo[]>("/api/trash/memo");
   }
 
   export function createMemo(content: string) {
@@ -105,9 +124,7 @@ namespace api {
   }
 
   export function hideMemo(memoId: string) {
-    return post("/api/memo/hide", {
-      memoId,
-    });
+    return delete_("/api/memo/" + memoId);
   }
 
   export function restoreMemo(memoId: string) {
@@ -127,7 +144,7 @@ namespace api {
   }
 
   export function getLinkedMemos(memoId: string) {
-    return get<Model.Memo[]>("/api/memo/linked?memoId=" + memoId);
+    return get<Model.Memo[]>("/api/memo/"+memoId);
   }
 
   export function removeGithubName() {

@@ -4,7 +4,7 @@ from fastapi import APIRouter, Cookie, status
 from starlette.exceptions import HTTPException
 
 from memos import store
-from memos.schema import MemoResponse, ResponseModel, MemoRequest
+from memos.schema import ResponseModel, MemoRequest
 
 router = APIRouter()
 
@@ -30,7 +30,7 @@ async def handle_create_memo(memo: MemoRequest, user_id: Optional[str] = Cookie(
     )
 
 
-@router.patch("/memo/{memo_id}")
+@router.patch("/memo/{memo_id}", response_model=ResponseModel)
 async def handle_update_memo(memo_id, memo: MemoRequest):
     try:
         m = await store.update_memo(memo_id, memo.content)
@@ -40,4 +40,43 @@ async def handle_update_memo(memo_id, memo: MemoRequest):
     return ResponseModel(
         message=f"Update a memo `{memo_id}`",
         data=m
+    )
+
+
+@router.get("/memo/{memo_id}", response_model=ResponseModel)
+async def handle_get_memo_by_id(memo_id):
+    try:
+        m = await store.get_memo_by_id(memo_id)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.args[0])
+
+    return ResponseModel(
+        message="success",
+        data=m
+    )
+
+
+@router.delete("/memo/{memo_id}", response_model=ResponseModel)
+async def handle_delete_memo(memo_id):
+    try:
+        m = await store.delete_memo(memo_id)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.args[0])
+
+    return ResponseModel(
+        message=f"Deleted memo `{memo_id}`",
+        data=m
+    )
+
+
+@router.get("/trash/memo", response_model=ResponseModel)
+async def handle_get_deleted_memo():
+    try:
+        deleted_memos = await store.get_deleted_memos()
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.args[0])
+
+    return ResponseModel(
+        message="success",
+        data=deleted_memos
     )

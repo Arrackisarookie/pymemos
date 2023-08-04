@@ -11,7 +11,7 @@ export const TOAST_ANIMATION_DURATION = 400;
 export const DAILY_TIMESTAMP = 3600 * 24 * 1000;
 
 // 标签 正则
-export const TAG_REG = /#\s(.+?)\s/g;
+export const TAG_REG = /#(\S+?)\s/g;
 
 // URL 正则
 export const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;
@@ -20,4 +20,4 @@ export const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;
 export const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 
 // memo 关联正则
-export const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
+export const MEMO_LINK_REG = /\[@(.+?)]\((.+?)\)/g;

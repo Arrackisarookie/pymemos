@@ -77,7 +77,7 @@ const TagList: React.FC<Props> = () => {
         ))}
         <Only when={tags.length < 5 && memoService.initialized}>
           <p className="tag-tip-container">
-            输入<span className="code-text"># Tag </span>来创建标签吧~
+            输入<span className="code-text">#Tag</span>来创建标签吧~
           </p>
         </Only>
       </div>
@@ -100,7 +100,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
     if (isActive) {
       locationService.setTagQuery("");
     } else {
-      utils.copyTextToClipboard(`# ${tag.text} `);
+      utils.copyTextToClipboard(`#${tag.text} `);
       if (!["/", "/recycle"].includes(locationService.getState().pathname)) {
         locationService.setPathname("/");
       }
