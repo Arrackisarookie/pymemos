@@ -1,8 +1,9 @@
 import uuid
 from datetime import datetime
 
-from memos.schema import UserResponse
-from memos.store import db, User
+from memos.auth.models import User
+from memos.auth.schemas import UserResponse
+from memos.database import db
 
 
 async def create_user(username: str, password: str, github_name: str = None, wx_openid: str = None) -> UserResponse:

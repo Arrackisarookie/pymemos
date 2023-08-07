@@ -3,9 +3,10 @@ import logging
 from fastapi import FastAPI, APIRouter
 from starlette.middleware.sessions import SessionMiddleware
 
-from memos.api import auth_router, memo_router
+from memos.auth.router import router as auth_router
 from memos.config import get_settings
-from memos.store import db
+from memos.database import db
+from memos.memo.router import router as memo_router
 
 log = logging.getLogger("memos")
 settings = get_settings()

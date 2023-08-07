@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Request, status
 from starlette.exceptions import HTTPException
 
-from memos import store
-from memos.schema import ResponseModel, MemoRequest
+from memos.memo import service
+from memos.memo.schemas import MemoRequest
+from memos.schema import ResponseModel
 
 router = APIRouter()
 
@@ -13,7 +14,7 @@ async def handle_get_all_memos(request: Request):
     if user_id is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in")
 
-    memos = await store.get_all_memos()
+    memos = await service.get_all_memos()
     return ResponseModel(
         message=f"success",
         data=memos
@@ -26,7 +27,7 @@ async def handle_create_memo(memo: MemoRequest, request: Request):
     if user_id is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in")
 
-    m = await store.create_memo(memo.content, user_id)
+    m = await service.create_memo(memo.content, user_id)
 
     return ResponseModel(
         message=f"Create a new memo: {m.content}",
@@ -41,7 +42,7 @@ async def handle_update_memo(memo_id, memo: MemoRequest, request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in")
 
     try:
-        m = await store.update_memo(memo_id, memo.content)
+        m = await service.update_memo(memo_id, memo.content)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.args[0])
 
@@ -58,7 +59,7 @@ async def handle_get_memo_by_id(memo_id, request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in")
 
     try:
-        m = await store.get_memo_by_id(memo_id)
+        m = await service.get_memo_by_id(memo_id)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.args[0])
 
@@ -75,7 +76,7 @@ async def handle_delete_memo(memo_id, request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in")
 
     try:
-        m = await store.delete_memo(memo_id)
+        m = await service.delete_memo(memo_id)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.args[0])
 
@@ -92,7 +93,7 @@ async def handle_get_deleted_memo(request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not logged in")
 
     try:
-        deleted_memos = await store.get_deleted_memos()
+        deleted_memos = await service.get_deleted_memos()
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.args[0])
 

@@ -1,8 +1,9 @@
 import uuid
 from datetime import datetime
 
-from memos.schema import MemoResponse
-from memos.store import db, Memo
+from memos.database import db
+from memos.memo.models import Memo
+from memos.memo.schemas import MemoResponse
 
 
 async def create_memo(content: str, user_id: str) -> MemoResponse:
