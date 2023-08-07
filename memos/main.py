@@ -1,11 +1,9 @@
 import logging
-from typing import Dict
 
-from fastapi import FastAPI, Request, APIRouter
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, APIRouter
 
 from memos.api import auth_router, memo_router
-from memos.store import db, init_tables
+from memos.store import db
 
 
 app = FastAPI(
@@ -13,17 +11,6 @@ app = FastAPI(
     swagger_ui_parameters={"defaultModelsExpandDepth": -1}
 )
 log = logging.getLogger("memos")
-
-
-@app.get('/healthcheck', include_in_schema=False)
-async def healthcheck() -> Dict[str, str]:
-    return {'status': 'ok'}
-
-
-@app.get('/init', include_in_schema=False)
-async def init() -> Dict[str, str]:
-    await init_tables()
-    return {'status': 'ok'}
 
 
 @app.on_event("startup")

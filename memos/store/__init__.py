@@ -1,4 +1,4 @@
-from memos.store.base import db, User, Memo, init_tables
+from memos.store.base import db, User, Memo, metadata
 from memos.store.memo import create_memo
 from memos.store.memo import delete_memo
 from memos.store.memo import get_all_memos
