@@ -1,16 +1,25 @@
 import logging
 
 from fastapi import FastAPI, APIRouter
+from starlette.middleware.sessions import SessionMiddleware
 
 from memos.api import auth_router, memo_router
+from memos.config import get_settings
 from memos.store import db
 
+log = logging.getLogger("memos")
+settings = get_settings()
 
 app = FastAPI(
     title="Memos",
     swagger_ui_parameters={"defaultModelsExpandDepth": -1}
 )
-log = logging.getLogger("memos")
+
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=settings.SECRET_KEY,
+    max_age=None
+)
 
 
 @app.on_event("startup")
