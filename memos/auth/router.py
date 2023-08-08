@@ -3,7 +3,7 @@ from starlette.exceptions import HTTPException
 
 from memos.auth import service
 from memos.auth.schemas import UserRequest
-from memos.schema import ResponseModel
+from memos.schemas import ResponseModel
 
 router = APIRouter()
 

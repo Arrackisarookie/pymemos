@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from memos.schema import BaseResponse
+from memos.schemas import BaseResponse
 
 
 class MemoRequest(BaseModel):

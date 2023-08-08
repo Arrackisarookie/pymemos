@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field, validator
 
-from memos.schema import BaseResponse
+from memos.schemas import BaseResponse
 
 STRONG_PASSWORD_PATTERN = re.compile(r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*.,_])[A-Za-z\d!@#$%^&*.,_]{6,128}$")
 
