@@ -36,8 +36,8 @@ async def get_user_by_user_id(user_id: str) -> UserResponse:
         username=row.username,
         github_name=row.github_name,
         wx_openid=row.wx_openid,
-        created_at=row.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-        updated_at=row.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+        created_at=row.created_at,
+        updated_at=row.updated_at
     )
     return user
 
@@ -54,8 +54,8 @@ async def get_user_by_username(username: str) -> UserResponse:
         username=row.username,
         github_name=row.github_name,
         wx_openid=row.wx_openid,
-        created_at=row.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-        updated_at=row.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+        created_at=row.created_at,
+        updated_at=row.updated_at
     )
     return user
 
@@ -74,8 +74,8 @@ async def get_user_by_username_and_password(username: str, password: str) -> Use
         username=row.username,
         github_name=row.github_name,
         wx_openid=row.wx_openid,
-        created_at=row.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-        updated_at=row.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+        created_at=row.created_at,
+        updated_at=row.updated_at
     )
 
     return user

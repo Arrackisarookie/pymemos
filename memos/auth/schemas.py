@@ -1,7 +1,7 @@
 import re
 from typing import Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, validator
 
 from memos.schema import BaseResponse
 
@@ -12,7 +12,7 @@ class UserRequest(BaseModel):
     username: str
     password: str = Field(min_length=6, max_length=128)
 
-    @field_validator("password")
+    @validator("password")
     def valid_password(cls, p: str) -> str:
         if not re.match(STRONG_PASSWORD_PATTERN, p):
             raise ValueError(

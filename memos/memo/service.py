@@ -22,8 +22,8 @@ async def create_memo(content: str, user_id: str) -> MemoResponse:
     return MemoResponse(
         id=memo_id,
         content=content,
-        created_at=now_datetime.strftime("%Y-%m-%d %H:%M:%S"),
-        updated_at=now_datetime.strftime("%Y-%m-%d %H:%M:%S")
+        created_at=now_datetime,
+        updated_at=now_datetime
     )
 
 
@@ -43,7 +43,7 @@ async def update_memo(memo_id: str, content: str):
         id=memo_id,
         content=content,
         created_at=m.created_at,
-        updated_at=now_datetime.strftime("%Y-%m-%d %H:%M:%S")
+        updated_at=now_datetime
     )
 
 
@@ -63,7 +63,7 @@ async def delete_memo(memo_id: str):
         id=memo_id,
         content=m.content,
         created_at=m.created_at,
-        updated_at=now_datetime.strftime("%Y-%m-%d %H:%M:%S")
+        updated_at=now_datetime
     )
 
 
@@ -77,8 +77,8 @@ async def get_memo_by_id(memo_id: str) -> MemoResponse:
     return MemoResponse(
         id=m.id,
         content=m.content,
-        created_at=m.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-        updated_at=m.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+        created_at=m.created_at,
+        updated_at=m.updated_at
     )
 
 
@@ -90,8 +90,8 @@ async def get_all_memos() -> list[MemoResponse]:
         MemoResponse(
             id=m.id,
             content=m.content,
-            created_at=m.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            updated_at=m.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+            created_at=m.created_at,
+            updated_at=m.updated_at
         )
         for m in memos
     ]
@@ -105,8 +105,8 @@ async def get_deleted_memos() -> list[MemoResponse]:
         MemoResponse(
             id=m.id,
             content=m.content,
-            created_at=m.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            updated_at=m.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+            created_at=m.created_at,
+            updated_at=m.updated_at
         )
         for m in memos
     ]
