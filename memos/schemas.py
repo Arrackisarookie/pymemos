@@ -24,6 +24,7 @@ class ORJSONModel(BaseModel):
         json_dumps = orjson_dumps
         json_encoders = {datetime: convert_datetime_to_gmt}  # method for custom JSON encoding of datetime fields
 
+    @classmethod
     @root_validator()
     def set_null_microseconds(cls, data: dict) -> dict:
         """Drops microseconds in all the datetime field values."""

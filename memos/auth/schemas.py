@@ -12,6 +12,7 @@ class UserRequest(BaseModel):
     username: str
     password: str = Field(min_length=6, max_length=128)
 
+    @classmethod
     @validator("password")
     def valid_password(cls, p: str) -> str:
         if not re.match(STRONG_PASSWORD_PATTERN, p):
