@@ -5,7 +5,7 @@ from sqlalchemy import Table, Column, String, TIMESTAMP
 from memos.database import metadata
 
 User = Table(
-    "users",
+    "user",
     metadata,
     Column("id", String, primary_key=True),
     Column("username", String, unique=True),
