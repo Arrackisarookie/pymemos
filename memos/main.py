@@ -33,7 +33,12 @@ async def shutdown() -> None:
     await db.disconnect()
 
 
-root_router = APIRouter(prefix="/api")
+@app.get("/healthcheck", include_in_schema=False)
+async def healthcheck() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+root_router = APIRouter(prefix=settings.ROUTE_PREFIX)
 root_router.include_router(auth_router, tags=["auth"])
 root_router.include_router(memo_router, tags=["memo"])
 
